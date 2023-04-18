@@ -1,0 +1,30 @@
+pipeline {
+    
+  agent any
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git([url: 'https://github.com/shastish/nginx', branch: 'master'])
+        
+      }
+    }
+    stage('Building image') {
+      steps{
+     
+      sh "sudo docker build -t nginx ."
+          }
+      }
+    stage('List image') {
+      steps{
+     
+      sh "sudo docker images"
+          }
+      }
+    stage('Create a container from the image') {
+      steps{
+     
+      sh "sudo docker run -td --name HDFC --publish 8050:80 nginx"
+          }
+      }
+  }
+}
